@@ -1,0 +1,19 @@
+main {
+    margin-top: 80px;
+}
+
+.page-header {
+    margin: 0 0 20px;
+}
+
+.avatar {
+    width: 100px;
+}
+
+.edit-calendar {
+    margin-bottom: 10px;
+}
+
+.error-template {padding: 40px 15px;text-align: center;}
+.error-actions {margin-top:15px;margin-bottom:15px;}
+.error-actions .btn { margin-right:10px; }
