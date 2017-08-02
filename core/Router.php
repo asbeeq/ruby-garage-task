@@ -7,15 +7,16 @@ use FastRoute;
 class Router
 {
 
+    private static $dispatcher;
+
+    private static $routs;
+
     /**
      * Main route function
      */
     public static function route()
     {
-        $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
-            $r->addRoute('GET', '/', 'Controller\\MainController/actionIndex');
-            $r->addRoute('POST', '/method', 'Controller\\MainController/actionIndex');
-        });
+        self::setDispatcher();
 
         $httpMethod = $_SERVER['REQUEST_METHOD'];
         $uri = $_SERVER['REQUEST_URI'];
@@ -25,40 +26,54 @@ class Router
         }
         $uri = rawurldecode($uri);
 
-        $routeInfo = $dispatcher->dispatch($httpMethod, $uri);
+        $routeInfo = self::$dispatcher->dispatch($httpMethod, $uri);
+
         switch ($routeInfo[0]) {
             case FastRoute\Dispatcher::NOT_FOUND:
-                self::pageNotFound();
+                self::errorPage('404', 'Not Found');
                 break;
             case FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
-                $allowedMethods = $routeInfo[1];
-                self::methodNotAllowed();
+                self::errorPage('405', 'Method Not Allowed');
                 break;
             case FastRoute\Dispatcher::FOUND:
                 $handler = $routeInfo[1];
                 $vars = $routeInfo[2];
-                list($class, $method) = explode("/", $handler, 2);
-                call_user_func_array(array(new $class, $method), $vars);
+                list($class, $method) = explode("_", $handler, 2);
+                $class = 'Controller\\' . ucfirst($class) . 'Controller';
+                $method = 'action' . ucfirst($method);
+                if (class_exists($class) && method_exists($class, $method)) {
+                    call_user_func_array([new $class, $method], $vars);
+                } else {
+                    self::errorPage('500', 'Internal Server Error');
+                }
                 break;
         }
     }
 
-    /**
-     * Render page 404
-     */
-    private static function pageNotFound()
+    private static function loadRouts()
     {
-        header('HTTP/1.1 404 Not Found');
-        header("Status: 404 Not Found");
-        $view = new View();
-        $view->setPageTitle('Page not found')->render('/errors/404');
+        self::$routs = include(BASE_PATH . '/app/routers.php');
     }
 
-    private static function methodNotAllowed()
+    private static function setDispatcher()
     {
-        header('HTTP/1.1 405 Method Not Allowed');
-        header("Status: 405 Method Not Allowed");
+        self::loadRouts();
+
+        self::$dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
+            foreach (self::$routs as $rout) {
+                $r->addRoute($rout[0], $rout[1], $rout[2]);
+            }
+        });
+    }
+
+    /**
+     * Render error page
+     */
+    private static function errorPage($code, $message)
+    {
+        header('HTTP/1.1 ' . $code . ' ' . $message);
+        header('Status: ' . $code . ' ' . $message);
         $view = new View();
-        $view->setPageTitle('Method Not Allowed')->render('/errors/405');
+        $view->setPageTitle($message)->render('/errors/' . $code);
     }
 }
