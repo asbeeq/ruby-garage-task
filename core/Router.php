@@ -1,50 +1,64 @@
 <?php
 
-namespace core;
+namespace Core;
 
-abstract class Router
+use FastRoute;
+
+class Router
 {
-    const DEFAULT_CONTROLLER = 'main';
-    const DEFAULT_ACTION = 'index';
 
     /**
      * Main route function
      */
     public static function route()
     {
-        $routes = explode('/', $_SERVER['REQUEST_URI']);
+        $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
+            $r->addRoute('GET', '/', 'Controller\\MainController/actionIndex');
+            $r->addRoute('POST', '/method', 'Controller\\MainController/actionIndex');
+        });
 
-        $controllerName = $routes[1] ? $routes[1] : self::DEFAULT_CONTROLLER;
-        $actionName = $routes[2] ? $routes[2] : self::DEFAULT_ACTION;
+        $httpMethod = $_SERVER['REQUEST_METHOD'];
+        $uri = $_SERVER['REQUEST_URI'];
 
-        $controllerName = ucfirst($controllerName) . 'Controller';
-        $actionName = 'action' . ucfirst($actionName);
-
-        $class = 'controller\\' . $controllerName;
-
-        if (!class_exists($class)) {
-            self::pageNotFound();
-            return;
+        if (false !== $pos = strpos($uri, '?')) {
+            $uri = substr($uri, 0, $pos);
         }
+        $uri = rawurldecode($uri);
 
-        $controller = new $class;
-
-        if (!method_exists($controller, $actionName)) {
-            self::pageNotFound();
-            return;
+        $routeInfo = $dispatcher->dispatch($httpMethod, $uri);
+        switch ($routeInfo[0]) {
+            case FastRoute\Dispatcher::NOT_FOUND:
+                self::pageNotFound();
+                break;
+            case FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
+                $allowedMethods = $routeInfo[1];
+                self::methodNotAllowed();
+                break;
+            case FastRoute\Dispatcher::FOUND:
+                $handler = $routeInfo[1];
+                $vars = $routeInfo[2];
+                list($class, $method) = explode("/", $handler, 2);
+                call_user_func_array(array(new $class, $method), $vars);
+                break;
         }
-
-        $controller->$actionName();
-
     }
 
     /**
      * Render page 404
      */
-    private static function pageNotFound() {
+    private static function pageNotFound()
+    {
         header('HTTP/1.1 404 Not Found');
         header("Status: 404 Not Found");
         $view = new View();
         $view->setPageTitle('Page not found')->render('/errors/404');
+    }
+
+    private static function methodNotAllowed()
+    {
+        header('HTTP/1.1 405 Method Not Allowed');
+        header("Status: 405 Method Not Allowed");
+        $view = new View();
+        $view->setPageTitle('Method Not Allowed')->render('/errors/405');
     }
 }

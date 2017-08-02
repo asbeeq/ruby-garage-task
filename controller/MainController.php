@@ -2,9 +2,9 @@
 /**
  *  Main Controller class
  */
-namespace controller;
+namespace Controller;
 
-use core\Controller;
+use Core\Controller;
 
 class MainController extends Controller
 {
