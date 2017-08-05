@@ -76,4 +76,8 @@ class Router
         $view = new View();
         $view->setPageTitle($message)->render('/errors/' . $code);
     }
+
+    public static function redirect() {
+
+    }
 }

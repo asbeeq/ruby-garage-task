@@ -5,9 +5,12 @@
 namespace Controller;
 
 use Core\Controller;
+use Core\Message;
+use Model\User;
 
 class RegisterController extends Controller
 {
+    public $message;
 
     /**
      * Generate register page
@@ -15,5 +18,29 @@ class RegisterController extends Controller
     public function actionIndex()
     {
         $this->view->render('register');
+    }
+
+    public function actionRegister()
+    {
+        $model = new User();
+        $model->login = filter_input(INPUT_POST, 'login');
+        $model->password = filter_input(INPUT_POST, 'password');
+        $model->passwordConfirm = filter_input(INPUT_POST, 'password_confirm');
+
+        if (!$model->validate()) {
+            $this->view->render('register', [
+                'messages' => Message::getMessages(),
+                'oldLogin' => $model->login,
+            ]);
+        } else {
+            if ($model->save()) {
+                Message::Success('You have successfully registered');
+            } else {
+                Message::Error('Someting wrong');
+            }
+            $this->view->render('register',[
+                'messages' => Message::getMessages(),
+            ]);
+        }
     }
 }
