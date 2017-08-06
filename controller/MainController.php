@@ -5,6 +5,9 @@
 namespace Controller;
 
 use Core\Controller;
+use Model\Project;
+use Model\User;
+use Model\Task;
 
 class MainController extends Controller
 {
@@ -14,6 +17,24 @@ class MainController extends Controller
      */
     public function actionIndex()
     {
-        $this->view->render('main');
+        $userModel = new User();
+        $projectsModel = new Project();
+        $taskModel = new Task();
+
+        if ($userModel->getCurrentUser()) {
+            $projects = [];
+            foreach ($projectsModel->getUserProjects($userModel->id) as $project) {
+                $projects[] = [
+                    'name' => $project['name'],
+                    'tasks' => $taskModel->getTasks($project['id']),
+                ];
+            }
+
+            $this->view->render('main', [
+                'projects' => $projects,
+            ]);
+        } else {
+            $this->view->render('main');
+        }
     }
 }

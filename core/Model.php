@@ -5,6 +5,7 @@ namespace Core;
 abstract class Model
 {
     public $mysqli;
+    protected $table;
 
     function __construct()
     {

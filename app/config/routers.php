@@ -7,4 +7,5 @@ return [
     ['GET', '/login', 'login_index'], // view login form
     ['POST', '/login', 'login_login'], // login user
     ['GET', '/logout', 'login_logout'], // logout user
+    ['GET', '/project/create', 'project_create'] // create project
 ];

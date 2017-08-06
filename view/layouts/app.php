@@ -62,8 +62,5 @@
     <?php endif; ?>
     <?php include TEMPLATE_PATH . $template; ?>
 </main>
-<footer>
-
-</footer>
 </body>
 </html>

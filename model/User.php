@@ -3,15 +3,22 @@
 namespace Model;
 
 use Core\Model;
-use Core\Message;
+use Libs\Message;
 
 class User extends Model
 {
 
+    public $id;
     public $login;
     public $email;
     public $password;
     public $passwordConfirm;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->table = 'users';
+    }
 
     /**
      * Validate function before save
@@ -65,7 +72,7 @@ class User extends Model
      */
     public function save()
     {
-        $query = "INSERT INTO users (login, password_hash, email) VALUES ('" .
+        $query = "INSERT INTO " . $this->table . " (login, password_hash, email) VALUES ('" .
             $this->login . "', '" .
             password_hash($this->password, PASSWORD_DEFAULT) . "', '" .
             $this->email . "');";
@@ -130,7 +137,7 @@ class User extends Model
      */
     private function findUserByLogin()
     {
-        $query = "SELECT * FROM `users` WHERE login LIKE '" . $this->login . "' LIMIT 1";
+        $query = "SELECT * FROM " . $this->table . " WHERE login LIKE '" . $this->login . "' LIMIT 1";
         return $this->mysqli->query($query);
     }
 
@@ -140,7 +147,22 @@ class User extends Model
      */
     private function findUserByEmail()
     {
-        $query = "SELECT * FROM `users` WHERE email LIKE '" . $this->email . "' LIMIT 1";
+        $query = "SELECT * FROM " . $this->table . " WHERE email LIKE '" . $this->email . "' LIMIT 1";
         return $this->mysqli->query($query);
+    }
+
+    public function getCurrentUser()
+    {
+        if (self::isLogin()) {
+            $query = "SELECT * FROM " . $this->table . " WHERE id = " . $_SESSION['user_id'] . " LIMIT 1";
+            $user = $this->mysqli->query($query)->fetch_assoc();
+            $this->id = $user['id'];
+            $this->login = $user['login'];
+            $this->email = $user['email'];
+
+            return true;
+        }
+
+        return false;
     }
 }
