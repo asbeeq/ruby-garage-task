@@ -25,12 +25,14 @@ class RegisterController extends Controller
     {
         $model = new User();
         $model->login = filter_input(INPUT_POST, 'login');
+        $model->email = filter_input(INPUT_POST, 'email');
         $model->password = filter_input(INPUT_POST, 'password');
         $model->passwordConfirm = filter_input(INPUT_POST, 'password_confirm');
 
         if (!$model->validate()) {
             $this->view->render('register', [
                 'oldLogin' => $model->login,
+                'oldEmail' => $model->email,
             ]);
         } else {
             if ($model->save()) {

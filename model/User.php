@@ -9,6 +9,7 @@ class User extends Model
 {
 
     public $login;
+    public $email;
     public $password;
     public $passwordConfirm;
 
@@ -21,6 +22,11 @@ class User extends Model
 
         if (!$this->login) {
             Message::Error('Login can not be empty');
+            $hasError = true;
+        }
+
+        if (!$this->email) {
+            Message::Error('Email can not be empty');
             $hasError = true;
         }
 
@@ -44,12 +50,20 @@ class User extends Model
             $hasError = true;
         }
 
+        if (!$hasError && $this->checkEmail()) {
+            Message::Error('Email already exists');
+            $hasError = true;
+        }
+
         return $hasError ? false : true;
     }
 
     public function save()
     {
-        $query = "INSERT INTO users (login, password_hash) VALUES ('" . $this->login . "', '" . password_hash($this->password, PASSWORD_DEFAULT) . "');";
+        $query = "INSERT INTO users (login, password_hash, email) VALUES ('" .
+            $this->login . "', '" .
+            password_hash($this->password, PASSWORD_DEFAULT) . "', '" .
+            $this->email . "');";
         return $this->mysqli->query($query);
     }
 
@@ -82,9 +96,20 @@ class User extends Model
         return $this->findUserByLogin()->num_rows;
     }
 
+    private function checkEmail()
+    {
+        return $this->findUserByEmail()->num_rows;
+    }
+
     private function findUserByLogin()
     {
         $query = "SELECT * FROM `users` WHERE login LIKE '" . $this->login . "' LIMIT 1";
+        return $this->mysqli->query($query);
+    }
+
+    private function findUserByEmail()
+    {
+        $query = "SELECT * FROM `users` WHERE email LIKE '" . $this->email . "' LIMIT 1";
         return $this->mysqli->query($query);
     }
 }
