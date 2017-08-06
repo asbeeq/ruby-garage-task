@@ -8,7 +8,7 @@ abstract class Model
 
     function __construct()
     {
-        $this->mysqli = include BASE_PATH . '/app/database.php';
+        $this->mysqli = include CONFIG_PATH . 'database.php';
     }
 
     function __destruct()

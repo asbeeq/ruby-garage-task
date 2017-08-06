@@ -6,8 +6,9 @@
     "autoload": {
         "psr-4": {
             "Controller\\": "controller/",
-            "Model\\" : "model",
-            "Core\\" : "core/"
+            "Model\\" : "model/",
+            "Core\\" : "core/",
+            "Libs\\" : "libs/"
         }
     }
 }

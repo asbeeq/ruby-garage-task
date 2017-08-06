@@ -4,7 +4,7 @@ namespace Controller;
 
 
 use Core\Controller;
-use Core\Message;
+use Libs\Message;
 use Core\Router;
 use Model\User;
 

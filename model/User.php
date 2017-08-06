@@ -13,9 +13,10 @@ class User extends Model
     public $password;
     public $passwordConfirm;
 
-    public $message = [];
-
-
+    /**
+     * Validate function before save
+     * @return bool
+     */
     public function validate() {
 
         $hasError = false;
@@ -58,6 +59,10 @@ class User extends Model
         return $hasError ? false : true;
     }
 
+    /**
+     * Function save new user to DB
+     * @return mixed
+     */
     public function save()
     {
         $query = "INSERT INTO users (login, password_hash, email) VALUES ('" .
@@ -67,6 +72,10 @@ class User extends Model
         return $this->mysqli->query($query);
     }
 
+    /**
+     * Login user function
+     * @return bool
+     */
     public function login()
     {
         $user = $this->findUserByLogin()->fetch_assoc();
@@ -78,6 +87,10 @@ class User extends Model
         return false;
     }
 
+    /**
+     * Check user is log in
+     * @return bool
+     */
     public static function isLogin()
     {
         if (isset($_SESSION['user_id'])) {
@@ -91,22 +104,40 @@ class User extends Model
         unset($_SESSION['user_login']);
     }
 
+    /**
+     * Check user login in db.
+     * Return 1 if login exist.
+     * @return mixed
+     */
     private function checkLogin()
     {
         return $this->findUserByLogin()->num_rows;
     }
 
+    /**
+     * Check user email in db.
+     * Return 1 if login exist.
+     * @return mixed
+     */
     private function checkEmail()
     {
         return $this->findUserByEmail()->num_rows;
     }
 
+    /**
+     * Find user by login in DB.
+     * @return mixed
+     */
     private function findUserByLogin()
     {
         $query = "SELECT * FROM `users` WHERE login LIKE '" . $this->login . "' LIMIT 1";
         return $this->mysqli->query($query);
     }
 
+    /**
+     * Find user by email in DB.
+     * @return mixed
+     */
     private function findUserByEmail()
     {
         $query = "SELECT * FROM `users` WHERE email LIKE '" . $this->email . "' LIMIT 1";

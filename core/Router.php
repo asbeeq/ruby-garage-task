@@ -52,7 +52,7 @@ class Router
 
     private static function loadRouts()
     {
-        self::$routs = include(BASE_PATH . '/app/routers.php');
+        self::$routs = include(CONFIG_PATH . 'routers.php');
     }
 
     private static function setDispatcher()
