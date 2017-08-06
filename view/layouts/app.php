@@ -4,8 +4,6 @@
  * @var $template
  */
 
-use Core\Message;
-
 ?>
 <!doctype html>
 <html>
@@ -36,19 +34,26 @@ use Core\Message;
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
+                <a class="navbar-brand" href="/">Task List</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
+
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/register">Register</a></li>
-                    <li><a href="/login">Log In</a></li>
+                    <?php if (\Model\User::isLogin()) : ?>
+                        <li class="navbar-text">Hello, <?= $_SESSION['user_login'] ?></li>
+                        <li><a href="/logout">Log Out</a></li>
+                    <?php else : ?>
+                        <li><a href="/register">Register</a></li>
+                        <li><a href="/login">Log In</a></li>
+                    <?php endif; ?>
                 </ul>
             </div>
         </div>
     </nav>
 </header>
 <main class="container">
-    <?php if (count($messages) > 0) : ?>
-        <?php foreach ($messages as $message) : ?>
+    <?php if (\Core\Message::hasMessages() > 0) : ?>
+        <?php foreach (\Core\Message::getMessages() as $message) : ?>
             <div class="alert alert-<?= $message['type'] ?> alert-dismissible" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <?= $message['text'] ?>

@@ -77,7 +77,8 @@ class Router
         $view->setPageTitle($message)->render('/errors/' . $code);
     }
 
-    public static function redirect() {
-
+    public static function redirect($url, $statusCode = 303) {
+        $url = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_NAME'] . $url;
+        header('Location: ' . $url, true, $statusCode);
     }
 }

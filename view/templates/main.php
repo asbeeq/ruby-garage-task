@@ -1,3 +1,4 @@
+<?php if (\Model\User::isLogin()) : ?>
 <div class="row">
     <div class="task-list-header col-md-8 col-md-offset-2 col-xs-12 col-xs-offset-0">
         <div class="col-md-1 col-xs-1 text-center task-list-header-icon">
@@ -30,3 +31,13 @@
         </div>
     </div>
 </div>
+<?php else : ?>
+    <div class="jumbotron text-center">
+        <h2>In order to use task list you need to</h2>
+        <p>
+            <a class="btn btn-primary btn-lg" href="/register" role="button">Register</a>
+            <span class="or">or</span>
+            <a class="btn btn-primary btn-lg" href="/login" role="button">Log in</a>
+        </p>
+    </div>
+<?php endif; ?>

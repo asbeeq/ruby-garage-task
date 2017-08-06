@@ -55,17 +55,36 @@ class User extends Model
 
     public function login()
     {
-
+        $user = $this->findUserByLogin()->fetch_assoc();
+        if (password_verify($this->password, $user['password_hash'])) {
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['user_login'] = $user['login'];
+            return true;
+        }
+        return false;
     }
 
-    public function isLogin()
+    public static function isLogin()
     {
+        if (isset($_SESSION['user_id'])) {
+            return true;
+        }
+        return false;
+    }
 
+    public static function logout() {
+        unset($_SESSION['user_id']);
+        unset($_SESSION['user_login']);
     }
 
     private function checkLogin()
     {
+        return $this->findUserByLogin()->num_rows;
+    }
+
+    private function findUserByLogin()
+    {
         $query = "SELECT * FROM `users` WHERE login LIKE '" . $this->login . "' LIMIT 1";
-        return $this->mysqli->query($query)->num_rows;
+        return $this->mysqli->query($query);
     }
 }

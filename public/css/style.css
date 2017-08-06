@@ -16,9 +16,17 @@ main {
     background-image: none;
 }
 
-.navbar-nav>li>a {
+.navbar-nav>li>a, .navbar-text, a.navbar-brand {
     padding-top: 3px;
     padding-bottom: 3px;
+}
+
+a.navbar-brand {
+    height: auto;
+}
+
+.navbar-text {
+    margin: 0;
 }
 
 .task-list-header, .task-list-action {
@@ -129,4 +137,9 @@ main {
 .task-list-action-input button:active {
     color: #ffffff;
     text-shadow: 0 1px 1px #2c3931;
+}
+
+.or {
+    padding-left: 10px;
+    padding-right: 10px;
 }

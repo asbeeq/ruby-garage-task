@@ -6,6 +6,7 @@ namespace Controller;
 
 use Core\Controller;
 use Core\Message;
+use Core\Router;
 use Model\User;
 
 class RegisterController extends Controller
@@ -29,7 +30,6 @@ class RegisterController extends Controller
 
         if (!$model->validate()) {
             $this->view->render('register', [
-                'messages' => Message::getMessages(),
                 'oldLogin' => $model->login,
             ]);
         } else {
@@ -38,9 +38,7 @@ class RegisterController extends Controller
             } else {
                 Message::Error('Someting wrong');
             }
-            $this->view->render('register',[
-                'messages' => Message::getMessages(),
-            ]);
+            Router::redirect('/login');
         }
     }
 }

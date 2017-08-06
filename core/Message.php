@@ -6,8 +6,6 @@ namespace Core;
 class Message
 {
 
-    public static $messages = [];
-
     public static function Error($message)
     {
         self::addMessage($message, MSG_ERROR);
@@ -25,30 +23,22 @@ class Message
 
     private static function addMessage($message, $type)
     {
-        self::$messages[] = [
+        $_SESSION['messages'][] = [
             'text' => $message,
             'type' => $type,
         ];
     }
 
-    public static function setMessages(array $messages)
-    {
-        self::$messages = $messages;
-    }
-
     public static function getMessages()
     {
-        return self::$messages;
-    }
-
-    public static function getLastMessage()
-    {
-        return array_pop(self::$messages);
+        $msg = $_SESSION['messages'];
+        unset($_SESSION['messages']);
+        return $msg;
     }
 
     public static function hasMessages()
     {
-        if (count(self::$messages) > 0 ) {
+        if (isset($_SESSION['messages'])) {
             return true;
         }
         return false;

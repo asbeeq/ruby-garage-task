@@ -1,5 +1,5 @@
 <div class="panel panel-default">
-    <div class="panel-heading"><h4>Register</h4></div>
+    <div class="panel-heading"><h4>Log In</h4></div>
     <div class="panel-body">
         <form method="post">
             <div class="form-group">
@@ -10,14 +10,10 @@
                 <label for="password">Password</label>
                 <input type="password" name="password" class="form-control" id="password">
             </div>
-            <div class="form-group">
-                <label for="confirm_password">Confirm Password</label>
-                <input type="password" name="password_confirm" class="form-control" id="confirm_password">
-            </div>
 
-            <button type="submit" class="btn btn-primary">Register</button>
+            <button type="submit" class="btn btn-primary">Login</button>
             <span class="or">or</span>
-            <a href="/login">log in</a>
+            <a href="/register">register</a>
         </form>
     </div>
 </div>
