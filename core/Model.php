@@ -4,6 +4,9 @@ namespace Core;
 
 abstract class Model
 {
+    /**
+     * @var \mysqli;
+     */
     public $mysqli;
     protected $table;
 

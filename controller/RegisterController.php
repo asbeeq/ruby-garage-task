@@ -18,7 +18,7 @@ class RegisterController extends Controller
      */
     public function actionIndex()
     {
-        $this->view->render('register');
+        $this->view->render('auth/register');
     }
 
     public function actionRegister()
@@ -30,7 +30,7 @@ class RegisterController extends Controller
         $model->passwordConfirm = filter_input(INPUT_POST, 'password_confirm');
 
         if (!$model->validate()) {
-            $this->view->render('register', [
+            $this->view->render('auth/register', [
                 'oldLogin' => $model->login,
                 'oldEmail' => $model->email,
             ]);

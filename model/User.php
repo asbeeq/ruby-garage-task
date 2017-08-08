@@ -33,8 +33,18 @@ class User extends Model
             $hasError = true;
         }
 
+        if (strlen($this->login) > 60) {
+            Message::Error('Login must be less than 60 characters');
+            $hasError = true;
+        }
+
         if (!$this->email) {
             Message::Error('Email can not be empty');
+            $hasError = true;
+        }
+
+        if (strlen($this->email) > 120) {
+            Message::Error('Email must be less than 120 characters');
             $hasError = true;
         }
 
@@ -101,7 +111,7 @@ class User extends Model
     public static function isLogin()
     {
         if (isset($_SESSION['user_id'])) {
-            return true;
+            return $_SESSION['user_id'];
         }
         return false;
     }

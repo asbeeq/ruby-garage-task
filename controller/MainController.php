@@ -25,6 +25,7 @@ class MainController extends Controller
             $projects = [];
             foreach ($projectsModel->getUserProjects($userModel->id) as $project) {
                 $projects[] = [
+                    'id' => $project['id'],
                     'name' => $project['name'],
                     'tasks' => $taskModel->getTasks($project['id']),
                 ];

@@ -13,13 +13,21 @@ class View
         return $this;
     }
 
-    public function render($template, array $data = [], $layout = null)
+    public function render($template, array $data = [], $layout = 'app')
     {
-        if (is_null($layout)) $layout = 'app';
         $layout .= '.php';
         $template .= '.php';
         extract($data);
 
         include LAYOUT_PATH . $layout;
+    }
+
+    public static function renderPartial($path, array $data = [])
+    {
+        $path = TEMPLATE_PATH . $path . '.php';
+        ob_start();
+        extract($data);
+        include $path;
+        return ob_get_clean();
     }
 }

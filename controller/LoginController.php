@@ -12,7 +12,7 @@ class LoginController extends Controller
 {
     public function actionIndex()
     {
-        $this->view->render('login');
+        $this->view->render('auth/login');
     }
 
     public function actionLogin()
@@ -25,7 +25,7 @@ class LoginController extends Controller
             Router::redirect('/');
         } else {
             Message::Error('Login or password entered incorrectly');
-            $this->view->render('login');
+            $this->view->render('auth/login');
         }
     }
 

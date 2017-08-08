@@ -1,25 +1,44 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Home
- * Date: 06.08.2017
- * Time: 12:32
- */
 
 namespace Controller;
 
-
 use Core\Controller;
+use Core\Router;
+use Model\Project;
+use Model\User;
+use Libs\Message;
 
 class ProjectController extends Controller
 {
     public function actionIndex()
     {
-        // TODO: Implement actionIndex() method.
+        $this->view->render('project/create');
     }
 
     public function actionCreate()
     {
-        $this->view->render('project/create');
+        $model = new Project();
+        if ($userId = User::isLogin()) {
+            $model->name = filter_input(INPUT_POST, 'name');
+            $model->userId = $userId;
+
+            if ($model->validate()) {
+                if ($model->save()) {
+                    Message::Success('You have successfully add project');
+                } else {
+                    Message::Error('Someting wrong');
+                }
+                Router::redirect('/');
+            } else {
+                $this->view->render('project/create', [
+                    'oldName' => $model->name,
+                ]);
+            }
+        }
+    }
+
+    public function actionDelete()
+    {
+        echo "OK";
     }
 }
