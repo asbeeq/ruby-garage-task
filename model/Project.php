@@ -19,13 +19,16 @@ class Project extends Model
 
     public function getUserProjects($userId)
     {
-        $query = "SELECT * FROM " . $this->table . " WHERE user_id = " . $userId;
-        $result = $this->mysqli->query($query);
-        $projects = [];
-        while ($row = $result->fetch_assoc()) {
-            $projects[] = $row;
+        if ($userId) {
+            $query = "SELECT * FROM " . $this->table . " WHERE user_id = " . $userId;
+            $result = $this->mysqli->query($query);
+            $projects = [];
+            while ($row = $result->fetch_assoc()) {
+                $projects[] = $row;
+            }
+            return $projects;
         }
-        return $projects;
+        return false;
     }
 
     public function validate()
