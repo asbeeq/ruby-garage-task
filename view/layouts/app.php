@@ -54,10 +54,7 @@
 <main class="container">
     <?php if (\Libs\Message::hasMessages() > 0) : ?>
         <?php foreach (\Libs\Message::getMessages() as $message) : ?>
-            <div class="alert alert-<?= $message['type'] ?> alert-dismissible" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <?= $message['text'] ?>
-            </div>
+            <?= \Core\View::renderPartial('alerts/alert', ['message' => $message]) ?>
         <?php endforeach; ?>
     <?php endif; ?>
     <?php include TEMPLATE_PATH . $template; ?>

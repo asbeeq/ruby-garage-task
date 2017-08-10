@@ -7,6 +7,7 @@ use Libs\Message;
 
 class Project extends Model
 {
+    public $id;
     public $name;
     public $userId;
 
@@ -56,12 +57,30 @@ class Project extends Model
         return $this->mysqli->query($query);
     }
 
-    public function delete($id)
+    public function findById($id) {
+        $query = "SELECT * FROM " . $this->table . " WHERE id = " . $id . " LIMIT 1";
+        $response = $this->mysqli->query($query)->fetch_assoc();
+        $this->id = $response['id'];
+        $this->name = $response['name'];
+        $this->userId = $response['user_id'];
+    }
+
+    public function update($name)
     {
-        $query = "DELETE FROM " . $this->table . " WHERE id = " . $id;
-        if ($this->mysqli->query($query)) {
-            return true;
-        }
-        return false;
+        $query = "UPDATE " . $this->table . " SET name = '" . $name . "' WHERE id = " . $this->id;
+        return $this->mysqli->query($query);
+    }
+
+    public function delete()
+    {
+        $this->deleteProjectTasks();
+        $query = "DELETE FROM " . $this->table . " WHERE id = " . $this->id;
+        return $this->mysqli->query($query);
+    }
+
+    private function deleteProjectTasks()
+    {
+        $model = new Task();
+        $model->deleteTasksFromProject($this->id);
     }
 }

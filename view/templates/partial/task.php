@@ -1,6 +1,6 @@
-<div class="row" data-task-id="<?= $task['id'] ?>">
+<div class="row">
     <div class="project-task col-md-8 col-md-offset-2 col-xs-12 col-xs-offset-0">
-        <div class="row aligned-row">
+        <div class="row aligned-row"  data-task-id="<?= $task['id'] ?>">
             <div class="project-task-done col-md-1 col-xs-1 text-center">
                 <input type="checkbox">
             </div>
@@ -11,9 +11,9 @@
                 <p class="text-center">
                     <i class="fa fa-sort" aria-hidden="true"></i>
                     <span class="delimiter"></span>
-                    <i class="fa fa-pencil" aria-hidden="true" data-task-id="<?= $task['id'] ?>"></i>
+                    <i class="fa fa-pencil" aria-hidden="true"></i>
                     <span class="delimiter"></span>
-                    <i class="fa fa-trash-o" aria-hidden="true" data-task-id="<?= $task['id'] ?>"></i>
+                    <i class="fa fa-trash-o" aria-hidden="true"></i>
                 </p>
             </div>
         </div>

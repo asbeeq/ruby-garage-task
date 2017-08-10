@@ -9,7 +9,7 @@
                     <h2><?= $project['name'] ?></h2>
                 </div>
                 <div class="col-md-2 col-xs-2 text-center project-header-right-icon">
-                    <i class="fa fa-pencil" data-project-id="<?= $project['id'] ?>" aria-hidden="true"></i>
+                    <i class="fa fa-pencil" aria-hidden="true"></i>
                     <span class="delimiter"></span>
                     <i class="fa fa-trash" data-project-id="<?= $project['id'] ?>" aria-hidden="true"></i>
                 </div>
@@ -22,15 +22,14 @@
                 <i class="fa fa-plus" aria-hidden="true"></i>
             </div>
             <div class="col-md-11 col-xs-11 project-action-input">
-                <form method="post">
-                    <div class="input-group">
-                        <input type="text" class="form-control"
-                               placeholder="Start typing here to create a task...">
-                        <span class="input-group-btn">
-                                <button class="btn btn-default" type="submit">Add Task</button>
-                        </span>
-                    </div>
-                </form>
+                <div class="input-group">
+                    <input type="text" class="form-control"
+                           data-project-id="<?= $project['id'] ?>"
+                           placeholder="Start typing here to create a task...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">Add Task</button>
+                    </span>
+                </div>
             </div>
         </div>
     </div>

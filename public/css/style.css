@@ -1,12 +1,6 @@
-html {
-    height: 100%;
-}
+
 body {
     background: #e2e2e2;
-    background: -moz-linear-gradient(top, #e2e2e2 0%, #fefefe 100%);
-    background: -webkit-linear-gradient(top, #e2e2e2 0%,#fefefe 100%);
-    background: linear-gradient(to bottom, #e2e2e2 0%,#fefefe 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e2e2e2', endColorstr='#fefefe',GradientType=0 );
 }
 
 main {
@@ -126,7 +120,8 @@ a.navbar-brand {
     border-top-left-radius: 0;
 }
 
-.project-action-input button {
+.project-action-input button.btn-default,
+.project-action-input button.btn-default:focus {
     padding: 4px 25px;
     color: #ffffff;
     text-shadow: 0 1px 1px #2c3931;
@@ -138,7 +133,9 @@ a.navbar-brand {
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#94cbae', endColorstr='#508767',GradientType=0 );
 }
 
-.project-action-input button:hover {
+.project-action-input button.btn-default:hover,
+.project-action-input button.btn-default:active,
+.project-action-input button.btn-default:active.focus {
     color: #ffffff;
     text-shadow: 0 1px 1px #2c3931;
     border: #447557 1px solid;
@@ -149,10 +146,6 @@ a.navbar-brand {
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#508767', endColorstr='#94cbae',GradientType=0 );
 }
 
-.project-action-input button:active {
-    color: #ffffff;
-    text-shadow: 0 1px 1px #2c3931;
-}
 
 .or {
     padding-left: 10px;

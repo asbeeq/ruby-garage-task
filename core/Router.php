@@ -81,4 +81,14 @@ class Router
         $url = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_NAME'] . $url;
         header('Location: ' . $url, true, $statusCode);
     }
+
+    public static function isAjax()
+    {
+        $requestWith = $_SERVER['HTTP_X_REQUESTED_WITH'];
+        if(isset($requestWith) && !empty($requestWith) && strtolower($requestWith) == 'xmlhttprequest') {
+            return true;
+        }
+        return false;
+
+    }
 }
