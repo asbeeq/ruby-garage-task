@@ -23,17 +23,21 @@ class MainController extends Controller
 
         if ($userModel->getCurrentUser()) {
             $projects = [];
-            foreach ($projectsModel->getUserProjects($userModel->id) as $project) {
-                $projects[] = [
-                    'id' => $project['id'],
-                    'name' => $project['name'],
-                    'tasks' => $taskModel->getTasks($project['id']),
-                ];
-            }
+            if ($userProjects = $projectsModel->getUserProjects($userModel->id)) {
+                foreach ($userProjects as $project) {
+                    $projects[] = [
+                        'id' => $project['id'],
+                        'name' => $project['name'],
+                        'tasks' => $taskModel->getTasks($project['id']),
+                    ];
+                }
 
-            $this->view->render('main', [
-                'projects' => $projects,
-            ]);
+                $this->view->render('main', [
+                    'projects' => $projects,
+                ]);
+            } else {
+                $this->view->render('main');
+            }
         } else {
             $this->view->render('main');
         }

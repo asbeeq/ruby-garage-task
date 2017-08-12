@@ -26,7 +26,7 @@ class Project extends Model
             while ($row = $result->fetch_assoc()) {
                 $projects[] = $row;
             }
-            return $projects;
+            return count($projects) > 0 ? $projects : false;
         }
         return false;
     }
