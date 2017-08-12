@@ -32,14 +32,14 @@ class MainController extends Controller
                     ];
                 }
 
-                $this->view->render('main', [
+                $this->view->setPageTitle('Task List')->render('main', [
                     'projects' => $projects,
                 ]);
             } else {
-                $this->view->render('main');
+                $this->view->setPageTitle('Task List')->render('main');
             }
         } else {
-            $this->view->render('main');
+            $this->view->setPageTitle('Task List')->render('main');
         }
     }
 }

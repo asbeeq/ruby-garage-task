@@ -160,7 +160,7 @@ $(document).ready(function () {
         });
     });
 
-    // SORTABLE
+    // Sort tasks
 
     $('.tasks').sortable({
         handle: '.fa-sort',
@@ -170,16 +170,13 @@ $(document).ready(function () {
             $.each($(this).find('.project-task'), function () {
                 data += '&order[]=' + ($(this).data('task-id'));
             });
-            console.log(data);
             $.ajax({
                 type: "POST",
                 url: 'ajax/sort-task',
                 data: data,
                 success: function (data) {
                     var response = JSON.parse(data);
-                    if (response.status) {
-
-                    } else {
+                    if (!response.status) {
                         console.log('Status order task: ' + response.status);
                     }
                 },
@@ -190,7 +187,6 @@ $(document).ready(function () {
             });
         }
     });
-    // $('.tasks').disableSelection();
 
     // Helpers
 

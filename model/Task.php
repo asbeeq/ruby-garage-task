@@ -9,6 +9,7 @@ class Task extends Model
     public $id;
     public $name;
     public $sortOrder;
+    public $priority = 1;
     public $isDone = 0;
     public $projectId;
     public $deadline = 'NULL';
@@ -33,10 +34,11 @@ class Task extends Model
 
     public function save()
     {
-        $query = "INSERT INTO " . $this->table . " (name, sort_order, is_done, project_id, deadline) " .
+        $query = "INSERT INTO " . $this->table . " (name, sort_order, priority_id, is_done, project_id, deadline) " .
             "VALUES ('" .
             $this->name . "', " .
             $this->sortOrder . ", " .
+            $this->priority . ", " .
             $this->isDone . ", " .
             $this->projectId. ", " .
             $this->deadline. ");";

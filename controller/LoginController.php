@@ -2,7 +2,6 @@
 
 namespace Controller;
 
-
 use Core\Controller;
 use Libs\Message;
 use Core\Router;
@@ -12,7 +11,7 @@ class LoginController extends Controller
 {
     public function actionIndex()
     {
-        $this->view->render('auth/login');
+        $this->view->setPageTitle('Login')->render('auth/login');
     }
 
     public function actionLogin()
@@ -25,7 +24,7 @@ class LoginController extends Controller
             Router::redirect('/');
         } else {
             Message::Error('Login or password entered incorrectly');
-            $this->view->render('auth/login');
+            $this->view->setPageTitle('Login')->render('auth/login');
         }
     }
 

@@ -13,7 +13,7 @@ class ProjectController extends Controller
 {
     public function actionIndex()
     {
-        $this->view->render('project/create');
+        $this->view->setPageTitle('Create Project')->render('project/create');
     }
 
     public function actionCreate()
@@ -31,7 +31,7 @@ class ProjectController extends Controller
                 }
                 Router::redirect('/');
             } else {
-                $this->view->render('project/create', [
+                $this->view->setPageTitle('Create Project')->render('project/create', [
                     'oldName' => $model->name,
                 ]);
             }

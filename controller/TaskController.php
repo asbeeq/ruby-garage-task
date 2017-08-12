@@ -101,7 +101,7 @@ class TaskController extends Controller
     {
         $order = filter_input(INPUT_POST, 'order', FILTER_VALIDATE_INT, FILTER_REQUIRE_ARRAY);
         $response = [];
-        if (!empty($projectId) && count($order) > 0) {
+        if (count($order) > 0) {
             if (Router::isAjax()) {
                 $model = new Task();
                 $model->sortOrder($order);
