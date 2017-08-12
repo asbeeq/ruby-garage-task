@@ -1,6 +1,6 @@
 <div class="row">
-    <div class="project-task col-md-8 col-md-offset-2 col-xs-12 col-xs-offset-0">
-        <div class="row aligned-row"  data-task-id="<?= $task['id'] ?>">
+    <div class="project-task col-md-8 col-md-offset-2 col-xs-12 col-xs-offset-0" data-task-id="<?= $task['id'] ?>">
+        <div class="row aligned-row">
             <div class="project-task-done col-md-1 col-xs-1 text-center">
                 <input type="checkbox">
             </div>

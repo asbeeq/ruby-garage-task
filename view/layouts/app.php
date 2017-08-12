@@ -13,8 +13,10 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="/js/jquery-3.2.1.min.js" type="text/javascript"></script>
+    <script src="/js/jquery-ui.min.js" type="text/javascript"></script>
     <script src="/js/bootstrap.min.js" type="text/javascript"></script>
     <script src="/js/script.js" type="text/javascript"></script>
+    <link href="/css/jquery-ui.min.css" rel="stylesheet" type="text/css"/>
     <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
     <link href="/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
     <link href="/css/font-awesome.css" rel="stylesheet" type="text/css"/>

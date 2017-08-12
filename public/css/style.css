@@ -7,6 +7,18 @@ main {
     margin-top: 50px;
 }
 
+.alert-message-wrapper {
+    position: fixed;
+    top: 27px;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+}
+
+.alert-message {
+    margin: 0 auto;
+}
+
 .container {
     max-width: 1053px;
 
@@ -62,9 +74,9 @@ a.navbar-brand {
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e1e1e1', endColorstr='#cccccc',GradientType=0 );
 }
 
-.project-header:hover {
-    cursor: pointer;
-}
+/*.project-header:hover {*/
+    /*cursor: pointer;*/
+/*}*/
 
 .project-header-icon {
     padding: 8px 0;
@@ -98,10 +110,19 @@ a.navbar-brand {
     line-height: 26px;
 }
 
+.project-header-right-icon i:hover {
+    color: #ffffff;
+    cursor: pointer;
+}
+
 .delimiter {
-    margin: 0 12px 0 7px;
+    margin-right: 5px;
     padding-left: 1px;
     background-color: #5284bf;
+}
+
+.fa {
+    padding: 3px 5px;
 }
 
 .project-action-input {
@@ -189,6 +210,11 @@ a.navbar-brand {
 
 .project-task-action p {
     color: #999999;
+}
+
+.project-task-action i:hover {
+    color: #444444;
+    cursor: pointer;
 }
 
 .project-task-action .delimiter {

@@ -124,6 +124,9 @@ $(document).ready(function () {
                     show_message(response.message);
                 } else {
                     console.log('Status add task: ' + response.status);
+                    if (response.message) {
+                        show_message(response.message);
+                    }
                 }
             },
             error: function (data) {
@@ -133,25 +136,89 @@ $(document).ready(function () {
         });
     });
 
+    // Click delete task button
+
+    body.on('click', '.project-task .fa-trash-o', function () {
+        var task_row = $(this).parents('.project-task');
+        $.ajax({
+            type: "POST",
+            url: 'ajax/delete-task',
+            data: 'task-id=' + task_row.data('task-id'),
+            success: function (data) {
+                var response = JSON.parse(data);
+                if (response.status) {
+                    delete_task(response);
+                    // show_message(response.message);
+                } else {
+                    console.log('Status delete task: ' + response.status);
+                }
+            },
+            error: function (data) {
+                var response = JSON.parse(data);
+                show_message(response.message);
+            }
+        });
+    });
+
+    // SORTABLE
+
+    $('.tasks').sortable({
+        handle: '.fa-sort',
+        axis: 'y',
+        update: function ( event, ui ) {
+            var data = 'project-id=' + $(this).parents('.project').data('project-id');
+            $.each($(this).find('.project-task'), function () {
+                data += '&order[]=' + ($(this).data('task-id'));
+            });
+            console.log(data);
+            $.ajax({
+                type: "POST",
+                url: 'ajax/sort-task',
+                data: data,
+                success: function (data) {
+                    var response = JSON.parse(data);
+                    if (response.status) {
+
+                    } else {
+                        console.log('Status order task: ' + response.status);
+                    }
+                },
+                error: function (data) {
+                    var response = JSON.parse(data);
+                    show_message(response.message);
+                }
+            });
+        }
+    });
+    // $('.tasks').disableSelection();
 
     // Helpers
 
     var delete_project = function(response) {
         $('.project[data-project-id=' + response.project + ']')
-            .hide('400', function(){
+            .fadeTo('400', 0, function(){
+                $(this).remove();
+                show_message(response.message);
+            });
+    };
+
+    var delete_task = function (response) {
+        $('.row:has(.project-task[data-task-id=' + response.task_id + '])')
+            .fadeTo('400', 0, function(){
                 $(this).remove();
             });
         show_message(response.message);
     };
 
     var show_message = function(message) {
-        clear_message_block();
-        $('main').prepend(message)
-    };
-
-    var clear_message_block = function() {
-        $('.alert').hide('fast', function(){
-            $(this).remove();
-        });
+        var alert = $('.alert-message-wrapper');
+        if (alert.length !== 0) {
+            alert.fadeTo('fast', 0, function(){
+                $(this).remove();
+                $('main').prepend(message);
+            });
+        } else {
+            $('main').prepend(message);
+        }
     };
 });
