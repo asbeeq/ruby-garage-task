@@ -4,19 +4,19 @@
         <form method="post">
             <div class="form-group">
                 <label for="login">Login</label>
-                <input type="text" name="login" class="form-control" id="login" value="<?= $oldLogin ?>">
+                <input type="text" name="login" class="form-control" id="login" value="<?= $oldLogin ?>" required>
             </div>
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" name="email" class="form-control" id="email" value="<?= $oldEmail ?>">
+                <input type="email" name="email" class="form-control" id="email" value="<?= $oldEmail ?>" required>
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" name="password" class="form-control" id="password">
+                <input type="password" name="password" class="form-control" id="password" required>
             </div>
             <div class="form-group">
                 <label for="confirm_password">Confirm Password</label>
-                <input type="password" name="password_confirm" class="form-control" id="confirm_password">
+                <input type="password" name="password_confirm" class="form-control" id="confirm_password" required>
             </div>
 
             <button type="submit" class="btn btn-primary">Register</button>

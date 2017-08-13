@@ -9,9 +9,11 @@
                     <h2><?= $project['name'] ?></h2>
                 </div>
                 <div class="col-md-2 col-xs-2 text-center project-header-right-icon">
-                    <i class="fa fa-pencil" aria-hidden="true"></i>
-                    <span class="delimiter"></span>
-                    <i class="fa fa-trash" data-project-id="<?= $project['id'] ?>" aria-hidden="true"></i>
+                    <div class="edit-project-buttons">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                        <span class="delimiter"></span>
+                        <i class="fa fa-trash" data-project-id="<?= $project['id'] ?>" aria-hidden="true"></i>
+                    </div>
                 </div>
             </div>
         </div>

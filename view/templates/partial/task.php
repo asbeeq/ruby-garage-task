@@ -5,16 +5,26 @@
                 <input type="checkbox">
             </div>
             <div class="project-task-text col-md-9 col-xs-9">
-                <p><?= $task['name'] ?></p>
+                <p class="task-text">
+                    <?= $task['name'] ?>
+                </p>
+                <p class="priority col-md-6">
+                    <i class="fa fa-star gray-star"></i>
+                    not urgent and not important
+                </p>
+                <p class="deadline text-right col-md-6">
+                    <i class="fa fa-clock-o"></i>
+                    Deadline not set
+                </p>
             </div>
-            <div class="project-task-action col-md-2 col-xs-2">
-                <p class="text-center">
+            <div class="project-task-action text-center col-md-2 col-xs-2">
+                <div class="edit-task-buttons">
                     <i class="fa fa-sort" aria-hidden="true"></i>
                     <span class="delimiter"></span>
                     <i class="fa fa-pencil" aria-hidden="true"></i>
                     <span class="delimiter"></span>
                     <i class="fa fa-trash-o" aria-hidden="true"></i>
-                </p>
+                </div>
             </div>
         </div>
     </div>

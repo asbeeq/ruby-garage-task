@@ -42,14 +42,18 @@ $(document).ready(function () {
         body.off('mouseover mouseout', '.project-header');
         var name = project_header.find('.project-header-text h2').text();
 
-        project_header.find('.fa-pencil, .fa-trash').hide();
-        $(this).parent()
-            .prepend($("<button>")
-                .addClass('btn btn-success')
-                .append($('<i>').addClass('fa fa-floppy-o')))
-            .append($("<button>")
-                .addClass('btn btn-danger')
-                .append($('<i>').addClass('fa fa-ban')));
+        project_header.find('.edit-project-buttons').hide();
+        $(this).parents('.project-header-right-icon')
+            .append($('<div>')
+                .addClass('project-save-cancel-buttons')
+                .append($("<button>")
+                    .addClass('btn btn-success')
+                    .append($('<i>').addClass('fa fa-floppy-o')))
+                .append($("<span>")
+                    .addClass('delimiter'))
+                .append($("<button>")
+                    .addClass('btn btn-danger')
+                    .append($('<i>').addClass('fa fa-ban'))));
 
         project_header.find('.project-header-text')
             .append($('<input>')
@@ -76,9 +80,9 @@ $(document).ready(function () {
                 var response = JSON.parse(data);
                 if (response.status) {
                     project_header.find('h2').text(project_header.find('input').val()).show();
-                    project_header.find('button, input').remove();
+                    project_header.find('input, .project-save-cancel-buttons').remove();
                     project_header.find(".project-header-right-icon").removeClass('show');
-                    project_header.find('.fa-pencil, .fa-trash').show();
+                    project_header.find('.edit-project-buttons').show();
                     body.on('mouseover mouseout', '.project-header',  function () {
                         $(this).find(".project-header-right-icon").toggleClass("show");
                     });
@@ -98,9 +102,9 @@ $(document).ready(function () {
 
     body.on('click', '.project-header button:has(.fa-ban)', function () {
         var project_header = $(this).parents('.project-header');
-        project_header.find('button, input').remove();
+        project_header.find('input, .project-save-cancel-buttons').remove();
         project_header.find(".project-header-right-icon").removeClass('show');
-        project_header.find('.fa-pencil, .fa-trash, h2').show();
+        project_header.find('.edit-project-buttons, h2').show();
         body.on('mouseover mouseout', '.project-header',  function () {
             $(this).find(".project-header-right-icon").toggleClass("show");
         });
@@ -188,7 +192,52 @@ $(document).ready(function () {
         }
     });
 
+    // click edit task button
+
+    body.on('click', '.project-task .fa-pencil', function () {
+        body.off('mouseover mouseout', '.project-task');
+        var task_row = $(this).parents('.project-task');
+        var name = $.trim(task_row.find('.task-text').text());
+        task_row.find('.task-text').hide();
+
+        task_row.find('.edit-task-buttons').hide();
+        $(this).parents('.project-task-action')
+            .append($('<div>')
+                .addClass('task-save-cancel-buttons')
+            .append($("<button>")
+                .addClass('btn btn-success btn-sm')
+                .append($('<i>').addClass('fa fa-floppy-o')))
+            .append($('<span>')
+                .addClass('delimiter'))
+            .append($("<button>")
+                .addClass('btn btn-danger btn-sm')
+                .append($('<i>').addClass('fa fa-ban')))
+            );
+
+        task_row.find('.project-task-text')
+            .prepend($('<div>')
+                .addClass('form-group')
+                .append($('<input>')
+                    .attr('name', 'name')
+                    .attr('type', 'text')
+                    .addClass('form-control input-sm task-input')
+                    .val(name)
+                )
+            );
+    });
+
+    body.on('click', '.project-task button:has(.fa-ban)', function () {
+        var project_task = $(this).parents('.project-task');
+        project_task.find('.project-task-text input, .task-save-cancel-buttons').remove();
+        project_task.find('.edit-task-buttons, .task-text').show();
+        project_task.find(".project-task-action").removeClass('show');
+        body.on('mouseover mouseout', '.project-task',  function () {
+            $(this).find(".project-task-action").toggleClass("show");
+        });
+    });
+
     // Helpers
+
 
     var delete_project = function(response) {
         $('.project[data-project-id=' + response.project + ']')

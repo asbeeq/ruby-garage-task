@@ -47,7 +47,8 @@ a.navbar-brand {
 }
 
 .project {
-    margin-bottom: 25px;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .project-header, .project-action, .project-task {
@@ -116,7 +117,7 @@ a.navbar-brand {
 }
 
 .delimiter {
-    margin-right: 5px;
+    margin: 0 5px;
     padding-left: 1px;
     background-color: #5284bf;
 }
@@ -191,25 +192,38 @@ a.navbar-brand {
 }
 
 .project-task-done, .project-task-text, .project-task-action {
-    padding: 15px 0;
+    padding: 10px 0;
 }
 
 .project-task p, .project-task-done input {
     margin: 0;
 }
 
-.project-task-text p {
-    padding: 0 15px;
+.project-task-text, .project-task-action {
     color: #999999;
+}
+
+.task-text {
+    padding-bottom: 5px;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.red-star {
+    color: #ff1a1a;
+}
+
+.yellow-star {
+    color: #e6e600;
+}
+
+.green-star {
+    color: #009933;
 }
 
 .project-task-text {
     border-left: 1px solid #efdadf;
     border-right: 1px solid #efdadf;
-}
-
-.project-task-action p {
-    color: #999999;
 }
 
 .project-task-action i:hover {
@@ -234,4 +248,18 @@ a.navbar-brand {
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
+}
+
+.task-input {
+    width: 98%;
+    margin: auto;
+}
+
+.text-error {
+    color: red;
+    padding-left: 5px;
+}
+
+.project .form-group {
+    margin-bottom: 5px;
 }
