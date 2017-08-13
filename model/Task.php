@@ -93,4 +93,10 @@ class Task extends Model
         }
         return true;
     }
+
+    public function update($name)
+    {
+        $query = "UPDATE " . $this->table . " SET name = '" . $name . "' WHERE id = " . $this->id;
+        return $this->mysqli->query($query);
+    }
 }

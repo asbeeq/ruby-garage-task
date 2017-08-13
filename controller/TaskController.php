@@ -111,4 +111,38 @@ class TaskController extends Controller
             }
         }
     }
+
+    public function actionUpdate()
+    {
+        $taskId = filter_input(INPUT_POST, 'task-id');
+        $newName = filter_input(INPUT_POST, 'new-name');
+
+        if ($taskId && $newName) {
+            if (Router::isAjax()) {
+                $response = [];
+                $response['task-id'] = $taskId;
+                $model = new Task();
+                $model->findTaskById($taskId);
+                if ($model->update($newName)) {
+                    $response['status'] = true;
+                    $response['message'] = View::renderPartial('alerts/alert', [
+                        'message' => [
+                            'type' => MSG_SUCCESS,
+                            'text' => 'Task successfully updated',
+                        ]
+                    ]);
+                } else {
+                    $response['status'] = false;
+                    $response['message'] = View::renderPartial('alerts/alert', [
+                        'message' => [
+                            'type' => MSG_ERROR,
+                            'text' => 'Task not updated',
+                        ]
+                    ]);
+                }
+                echo json_encode($response);
+                return;
+            }
+        }
+    }
 }

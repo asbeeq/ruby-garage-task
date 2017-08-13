@@ -15,4 +15,5 @@ return [
     ['POST', '/ajax/create-task', 'task_create'], // create task
     ['POST', '/ajax/delete-task', 'task_delete'], // delete task
     ['POST', '/ajax/sort-task', 'task_sort'], // sort task
+    ['POST', '/ajax/update-task', 'task_update'], // sort task
 ];

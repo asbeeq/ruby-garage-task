@@ -225,6 +225,8 @@ $(document).ready(function () {
                 )
             );
     });
+    
+    // Click cancel button
 
     body.on('click', '.project-task button:has(.fa-ban)', function () {
         var project_task = $(this).parents('.project-task');
@@ -233,6 +235,39 @@ $(document).ready(function () {
         project_task.find(".project-task-action").removeClass('show');
         body.on('mouseover mouseout', '.project-task',  function () {
             $(this).find(".project-task-action").toggleClass("show");
+        });
+    });
+    
+    // Click save button
+    
+    body.on('click', '.project-task button:has(.fa-floppy-o)', function () {
+        var task_block = $(this).parents('.project-task');
+        var task_id = task_block.data('task-id');
+        var new_name = task_block.find('input[type=text]').val();
+
+        $.ajax({
+            type: "POST",
+            url: 'ajax/update-task',
+            data: 'task-id=' + task_id + '&new-name=' + new_name,
+            success: function (data) {
+                var response = JSON.parse(data);
+                if (response.status) {
+                    task_block.find('.task-text').text(new_name).show();
+                    task_block.find('input[type=text], .task-save-cancel-buttons').remove();
+                    task_block.find(".project-task-action").removeClass('show');
+                    task_block.find('.edit-task-buttons').show();
+                    body.on('mouseover mouseout', '.project-task',  function () {
+                        $(this).find(".project-task-action").toggleClass("show");
+                    });
+                    show_message(response.message);
+                } else {
+                    console.log('Status edit task: ' + response.status);
+                }
+            },
+            error: function (data) {
+                var response = JSON.parse(data);
+                show_message(response.message);
+            }
         });
     });
 
