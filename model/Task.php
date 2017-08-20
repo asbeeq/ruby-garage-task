@@ -47,7 +47,10 @@ class Task extends Model
 
     public function getTasks($projectId)
     {
-        $query = "SELECT * FROM " . $this->table . " WHERE project_id = " . $projectId . " ORDER BY sort_order ASC";
+        // SELECT tasks.id, tasks.name, sort_order, priority_id, is_done, project_id, deadline, prioritys.name as priority_name FROM tasks INNER JOIN prioritys ON priority_id = prioritys.id
+        $query = "SELECT tasks.id, tasks.name, sort_order, priority_id, is_done, project_id, deadline, priorities.name as priority_name, color as priority_color FROM " .
+            $this->table . " INNER JOIN priorities ON priority_id = priorities.id " .
+            "WHERE project_id = " . $projectId . " ORDER BY sort_order ASC";
         $result = $this->mysqli->query($query);
         $tasks = [];
         while ($row = $result->fetch_assoc()) {
@@ -70,6 +73,7 @@ class Task extends Model
             $this->id = $task['id'];
             $this->name = $task['name'];
             $this->sortOrder = $task['sort_order'];
+            $this->priority = $task['priority_id'];
             $this->isDone = $task['is_done'];
             $this->deadline = $task['deadline'];
             return true;
@@ -97,6 +101,29 @@ class Task extends Model
     public function update($name)
     {
         $query = "UPDATE " . $this->table . " SET name = '" . $name . "' WHERE id = " . $this->id;
+        return $this->mysqli->query($query);
+    }
+
+    public function changePriority()
+    {
+        $model = new Priority();
+        $priority = $model->getNextPriority($this->priority);
+        $query = "UPDATE " . $this->table . " SET priority_id = " . $priority['id'] . " WHERE id = " . $this->id;
+        $this->mysqli->query($query);
+        return $priority;
+    }
+
+    public function changeDeadline($deadline)
+    {
+        $deadline = is_null($deadline) ? 'NULL' : "'" . $deadline . "'";
+        $query = "UPDATE " . $this->table . " SET deadline = " . $deadline . " WHERE id = " . $this->id;
+        return $this->mysqli->query($query);
+    }
+
+    public function changeDone($isDone)
+    {
+        $isDone = $isDone ? 1 : 0;
+        $query = "UPDATE " . $this->table . " SET is_done = '" . $isDone . "' WHERE id = " . $this->id;
         return $this->mysqli->query($query);
     }
 }

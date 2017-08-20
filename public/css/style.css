@@ -221,6 +221,10 @@ a.navbar-brand {
     color: #009933;
 }
 
+.gray-star {
+    color: #999999;
+}
+
 .project-task-text {
     border-left: 1px solid #efdadf;
     border-right: 1px solid #efdadf;
@@ -235,7 +239,7 @@ a.navbar-brand {
     background-color: #cccccc;
 }
 
-.project-task-action {
+.project-task-action, .clear-deadline {
     display: none;
 }
 
@@ -262,4 +266,31 @@ a.navbar-brand {
 
 .project .form-group {
     margin-bottom: 5px;
+}
+
+.priority span:hover, .deadline .data-time-deadline:hover {
+    color: #666666;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.data-time-deadline,
+.data-time-deadline:active,
+.data-time-deadline:focus {
+    background-color: transparent;
+    outline-color: transparent;
+    border: none;
+}
+
+.show {
+    display: inline-block!important;
+}
+
+.clear-deadline:hover {
+    cursor: pointer;
+    color: #666666;
+}
+
+.done {
+    text-decoration: line-through;
 }

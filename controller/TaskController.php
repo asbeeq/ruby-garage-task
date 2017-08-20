@@ -6,6 +6,7 @@ use Core\Controller;
 use Model\Task;
 use Core\Router;
 use Core\View;
+use Model\Priority;
 
 class TaskController extends Controller
 {
@@ -37,6 +38,8 @@ class TaskController extends Controller
                         'task' => [
                             'id' => $id,
                             'name' => $model->name,
+                            'priority_name' => 'not urgent and not important',
+                            'priority_color' => 'gray'
                         ],
                     ]);
                 } else {
@@ -137,6 +140,112 @@ class TaskController extends Controller
                         'message' => [
                             'type' => MSG_ERROR,
                             'text' => 'Task not updated',
+                        ]
+                    ]);
+                }
+                echo json_encode($response);
+                return;
+            }
+        }
+    }
+
+    public function actionChangePriority()
+    {
+        $taskId = filter_input(INPUT_POST, 'task-id', FILTER_VALIDATE_INT);
+//        $currentPriority = filter_input(INPUT_POST, 'current-priority', FILTER_VALIDATE_INT);
+
+        if ($taskId) {
+            if (Router::isAjax()) {
+                $response = [];
+                $response['task-id'] = $taskId;
+                $model = new Task();
+                $model->findTaskById($taskId);
+                if ($newPriority = $model->changePriority()) {
+                    $response['status'] = true;
+                    $response['new_priority_name'] = $newPriority['name'];
+                    $response['new_priority_color'] = $newPriority['color'];
+                    $response['message'] = View::renderPartial('alerts/alert', [
+                        'message' => [
+                            'type' => MSG_SUCCESS,
+                            'text' => 'Priority successfully updated',
+                        ]
+                    ]);
+                } else {
+                    $response['status'] = false;
+                    $response['message'] = View::renderPartial('alerts/alert', [
+                        'message' => [
+                            'type' => MSG_ERROR,
+                            'text' => 'Priority not updated',
+                        ]
+                    ]);
+                }
+                echo json_encode($response);
+                return;
+            }
+        }
+    }
+
+    public function actionChangeDeadline()
+    {
+        $taskId = filter_input(INPUT_POST, 'task-id', FILTER_VALIDATE_INT);
+        $deadline = filter_input(INPUT_POST, 'new-deadline');
+
+        $deadline = $deadline == 'clear' ? null : date('Y-m-d H:i:s', strtotime($deadline));
+
+        if ($taskId) {
+            if (Router::isAjax()) {
+                $response = [];
+                $response['task-id'] = $taskId;
+                $model = new Task();
+                $model->findTaskById($taskId);
+                if ($model->changeDeadline($deadline)) {
+                    $response['status'] = true;
+                    $response['message'] = View::renderPartial('alerts/alert', [
+                        'message' => [
+                            'type' => MSG_SUCCESS,
+                            'text' => 'Deadline successfully updated',
+                        ]
+                    ]);
+                } else {
+                    $response['status'] = false;
+                    $response['message'] = View::renderPartial('alerts/alert', [
+                        'message' => [
+                            'type' => MSG_ERROR,
+                            'text' => 'Deadline not updated',
+                        ]
+                    ]);
+                }
+                echo json_encode($response);
+                return;
+            }
+        }
+    }
+
+    public function actionChangeDone()
+    {
+        $taskId = filter_input(INPUT_POST, 'task-id', FILTER_VALIDATE_INT);
+        $isDone = filter_input(INPUT_POST, 'is-done', FILTER_VALIDATE_BOOLEAN);
+
+        if ($taskId) {
+            if (Router::isAjax()) {
+                $response = [];
+                $response['task-id'] = $taskId;
+                $model = new Task();
+                $model->findTaskById($taskId);
+                if ($model->changeDone($isDone)) {
+                    $response['status'] = true;
+                    $response['message'] = View::renderPartial('alerts/alert', [
+                        'message' => [
+                            'type' => MSG_SUCCESS,
+                            'text' => 'Done successfully updated',
+                        ]
+                    ]);
+                } else {
+                    $response['status'] = false;
+                    $response['message'] = View::renderPartial('alerts/alert', [
+                        'message' => [
+                            'type' => MSG_ERROR,
+                            'text' => 'Done not updated',
                         ]
                     ]);
                 }

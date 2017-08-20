@@ -16,4 +16,7 @@ return [
     ['POST', '/ajax/delete-task', 'task_delete'], // delete task
     ['POST', '/ajax/sort-task', 'task_sort'], // sort task
     ['POST', '/ajax/update-task', 'task_update'], // sort task
+    ['POST', '/ajax/changePriority-task', 'task_changePriority'], // Change task priority
+    ['POST', '/ajax/changeDeadline-task', 'task_changeDeadline'], // Change task priority
+    ['POST', '/ajax/changeDone-task', 'task_changeDone'], // Change task priority
 ];

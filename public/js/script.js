@@ -10,9 +10,9 @@ $(document).ready(function () {
     });
 
     // Delete project
-
     $(".project-header .fa-trash").on('click', function () {
         var c = confirm("Your project and all the tasks in it will be deleted. Are you sure?");
+        //todo validator project_id
         if (c === true) {
             $.ajax({
                 type: "POST",
@@ -35,7 +35,6 @@ $(document).ready(function () {
     });
 
     // Click edit project button
-
     $('.project-header .fa-pencil').on('click', function () {
         var project_header = $(this).parents('.project-header');
 
@@ -66,11 +65,12 @@ $(document).ready(function () {
     });
 
     // Click save button (edit project)
-
     body.on('click', '.project-header button:has(.fa-floppy-o)', function () {
         var project_header = $(this).parents('.project-header');
         var project_id = project_header.find('input').data('project-id');
         var new_name = project_header.find('input').val();
+
+        //todo validator project_id and new_name
 
         $.ajax({
             type: "POST",
@@ -79,27 +79,23 @@ $(document).ready(function () {
             success: function (data) {
                 var response = JSON.parse(data);
                 if (response.status) {
-                    project_header.find('h2').text(project_header.find('input').val()).show();
+                    project_header.find('h2').text(new_name).show();
                     project_header.find('input, .project-save-cancel-buttons').remove();
                     project_header.find(".project-header-right-icon").removeClass('show');
                     project_header.find('.edit-project-buttons').show();
                     body.on('mouseover mouseout', '.project-header',  function () {
                         $(this).find(".project-header-right-icon").toggleClass("show");
                     });
-                    show_message(response.message);
+                    // show_message(response.message);
+                    console.log('Status edit project: ' + response.status);
                 } else {
-                    console.log('Status delete project: ' + response.status);
+                    console.log('Status edit project: ' + response.status);
                 }
-            },
-            error: function (data) {
-                var response = JSON.parse(data);
-                show_message(response.message);
             }
         });
     });
 
     // Click cancel button (Edit project)
-
     body.on('click', '.project-header button:has(.fa-ban)', function () {
         var project_header = $(this).parents('.project-header');
         project_header.find('input, .project-save-cancel-buttons').remove();
@@ -111,11 +107,13 @@ $(document).ready(function () {
     });
 
     //Click add task button
-
     body.on('click', '.project-action-input button', function () {
         var project_input = $(this).parents('.project-action-input');
         var project_id = project_input.find('input').data('project-id');
         var task = project_input.find('input').val();
+
+        //todo validator project_id and task
+
         $.ajax({
             type: "POST",
             url: 'ajax/create-task',
@@ -141,9 +139,11 @@ $(document).ready(function () {
     });
 
     // Click delete task button
-
     body.on('click', '.project-task .fa-trash-o', function () {
         var task_row = $(this).parents('.project-task');
+
+        //todo validator task_id
+
         $.ajax({
             type: "POST",
             url: 'ajax/delete-task',
@@ -193,7 +193,6 @@ $(document).ready(function () {
     });
 
     // click edit task button
-
     body.on('click', '.project-task .fa-pencil', function () {
         body.off('mouseover mouseout', '.project-task');
         var task_row = $(this).parents('.project-task');
@@ -227,10 +226,9 @@ $(document).ready(function () {
     });
     
     // Click cancel button
-
     body.on('click', '.project-task button:has(.fa-ban)', function () {
         var project_task = $(this).parents('.project-task');
-        project_task.find('.project-task-text input, .task-save-cancel-buttons').remove();
+        project_task.find('.form-group, .task-save-cancel-buttons').remove();
         project_task.find('.edit-task-buttons, .task-text').show();
         project_task.find(".project-task-action").removeClass('show');
         body.on('mouseover mouseout', '.project-task',  function () {
@@ -239,11 +237,12 @@ $(document).ready(function () {
     });
     
     // Click save button
-    
     body.on('click', '.project-task button:has(.fa-floppy-o)', function () {
         var task_block = $(this).parents('.project-task');
         var task_id = task_block.data('task-id');
         var new_name = task_block.find('input[type=text]').val();
+
+        //todo validator task_id and new_name
 
         $.ajax({
             type: "POST",
@@ -253,7 +252,7 @@ $(document).ready(function () {
                 var response = JSON.parse(data);
                 if (response.status) {
                     task_block.find('.task-text').text(new_name).show();
-                    task_block.find('input[type=text], .task-save-cancel-buttons').remove();
+                    task_block.find('.form-group, .task-save-cancel-buttons').remove();
                     task_block.find(".project-task-action").removeClass('show');
                     task_block.find('.edit-task-buttons').show();
                     body.on('mouseover mouseout', '.project-task',  function () {
@@ -271,9 +270,93 @@ $(document).ready(function () {
         });
     });
 
+    // Change priority
+
+    body.on('click', '.priority', function () {
+        var task_block = $(this).parents('.project-task');
+        var task_id = task_block.data('task-id');
+
+        // console.log(current_priority, task_id);
+        // todo validate data
+
+        $.ajax({
+            type: "POST",
+            url: 'ajax/changePriority-task',
+            data: 'task-id=' + task_id,
+            success: function (data) {
+                var response = JSON.parse(data);
+                if (response.status) {
+                    task_block.find('.priority span').text(response.new_priority_name);
+                    task_block.find('.priority i')
+                        .removeClass()
+                        .addClass('fa fa-star ' + response.new_priority_color + '-star');
+                } else {
+                    console.log('Status edit priority: ' + response.status);
+                }
+            },
+            error: function () {
+                console.log('Error edit priority');
+            }
+        });
+    });
+
+    // Show clear deadline
+
+    body.on('mouseover mouseout', '.deadline', function () {
+       $(this).find('.clear-deadline').toggleClass("show")
+    });
+
+    // Click clear deadline button
+    body.on('click', '.clear-deadline', function () {
+        var task_block = $(this).parents('.project-task');
+        var id = task_block.data('task-id');
+        $.ajax({
+            type: "POST",
+            url: 'ajax/changeDeadline-task',
+            data: 'task-id=' + id + '&new-deadline=clear',
+            success: function (data) {
+                var response = JSON.parse(data);
+                if (response.status) {
+                    console.log($(this));
+                    task_block.find('input').val("Click to set deadline");
+                } else {
+                    console.log('Status edit deadline: ' + response.status);
+                }
+            },
+            error: function () {
+                console.log('Error clear deadline');
+            }
+        });
+    });
+
+    // Click done checkbox
+
+    body.on('click', '.is-done', function () {
+        var task_block = $(this).parents('.project-task');
+        var id = task_block.data('task-id');
+        var is_done = $(this).is(":checked");
+
+        console.log(is_done);
+        $.ajax({
+            type: "POST",
+            url: 'ajax/changeDone-task',
+            data: 'task-id=' + id + '&is-done=' + is_done,
+            success: function (data) {
+                var response = JSON.parse(data);
+                if (response.status) {
+                    task_block.find('.task-text').addClass('done');
+                } else {
+                    console.log('Status edit done: ' + response.status);
+                }
+            },
+            error: function () {
+                console.log('Error done deadline');
+            }
+        });
+    });
+
     // Helpers
-
-
+    //todo only message in params
     var delete_project = function(response) {
         $('.project[data-project-id=' + response.project + ']')
             .fadeTo('400', 0, function(){
@@ -281,7 +364,7 @@ $(document).ready(function () {
                 show_message(response.message);
             });
     };
-
+    //todo only message in params
     var delete_task = function (response) {
         $('.row:has(.project-task[data-task-id=' + response.task_id + '])')
             .fadeTo('400', 0, function(){
@@ -289,7 +372,7 @@ $(document).ready(function () {
             });
         show_message(response.message);
     };
-
+    //todo create alert in js
     var show_message = function(message) {
         var alert = $('.alert-message-wrapper');
         if (alert.length !== 0) {

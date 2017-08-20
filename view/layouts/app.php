@@ -15,10 +15,13 @@
     <script src="/js/jquery-3.2.1.min.js" type="text/javascript"></script>
     <script src="/js/jquery-ui.min.js" type="text/javascript"></script>
     <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/jquery.datetimepicker.full.min.js" type="text/javascript"></script>
     <script src="/js/script.js" type="text/javascript"></script>
+
     <link href="/css/jquery-ui.min.css" rel="stylesheet" type="text/css"/>
     <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
     <link href="/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/jquery.datetimepicker.min.css" rel="stylesheet" type="text/css"/>
     <link href="/css/font-awesome.css" rel="stylesheet" type="text/css"/>
     <link href="/css/style.css" rel="stylesheet" type="text/css"/>
 
