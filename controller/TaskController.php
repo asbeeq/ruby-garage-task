@@ -6,18 +6,20 @@ use Core\Controller;
 use Model\Task;
 use Core\Router;
 use Core\View;
-use Model\Priority;
 
 class TaskController extends Controller
 {
     public function actionIndex(){}
 
+    /**
+     * Create task function
+     */
     public function actionCreate()
     {
         $projectId = filter_input(INPUT_POST, 'project-id', FILTER_VALIDATE_INT);
         $task = filter_input(INPUT_POST, 'task');
 
-        if (!empty($projectId) && !empty($task)) {
+        if ($projectId && $task) {
             if (Router::isAjax()) {
                 $response = [];
                 $response['project-id'] = $projectId;
@@ -28,96 +30,67 @@ class TaskController extends Controller
 
                 if ($id = $model->save()) {
                     $response['status'] = true;
-                    $response['message'] = View::renderPartial('alerts/alert', [
-                        'message' => [
-                            'type' => MSG_SUCCESS,
-                            'text' => 'Task successfully created',
-                        ]
-                    ]);
                     $response['task_block'] = View::renderPartial('partial/task', [
                         'task' => [
                             'id' => $id,
                             'name' => $model->name,
-                            'priority_name' => 'not urgent and not important',
+                            'priority_name' => 'Not Urgent & Not Important',
                             'priority_color' => 'gray'
                         ],
                     ]);
                 } else {
                     $response['status'] = false;
-                    $response['message'] = View::renderPartial('alerts/alert', [
-                        'message' => [
-                            'type' => MSG_ERROR,
-                            'text' => 'Task not created',
-                        ]
-                    ]);
                 }
                 echo json_encode($response);
                 return;
             }
-        } elseif (empty($task)) {
-            $response['status'] = false;
-            $response['message'] = View::renderPartial('alerts/alert', [
-                'message' => [
-                    'type' => MSG_ERROR,
-                    'text' => 'The task should not be empty',
-                ]
-            ]);
-            echo json_encode($response);
         }
     }
 
+    /**
+     * Delete task function
+     */
     public function actionDelete()
     {
         $taskId = filter_input(INPUT_POST, 'task-id', FILTER_VALIDATE_INT);
-        $response = [];
-        if (!empty($taskId)) {
+
+        if ($taskId) {
             if (Router::isAjax()) {
                 $response['task_id'] = $taskId;
                 $model = new Task();
                 $model->findTaskById($taskId);
-
-                if ($model->delete()) {
-                    $response['status'] = true;
-                    $response['message'] = View::renderPartial('alerts/alert', [
-                        'message' => [
-                            'type' => MSG_SUCCESS,
-                            'text' => 'Task successfully deleted',
-                        ]
-                    ]);
-                } else {
-                    $response['status'] = false;
-                    $response['message'] = View::renderPartial('alerts/alert', [
-                        'message' => [
-                            'type' => MSG_ERROR,
-                            'text' => 'Task not deleted',
-                        ]
-                    ]);
-                }
+                $response['status'] = $model->delete() ? true : false;
                 echo json_encode($response);
                 return;
             }
         }
-
     }
 
+    /**
+     * Sort task function
+     */
     public function actionSort()
     {
         $order = filter_input(INPUT_POST, 'order', FILTER_VALIDATE_INT, FILTER_REQUIRE_ARRAY);
-        $response = [];
         if (count($order) > 0) {
             if (Router::isAjax()) {
-                $model = new Task();
-                $model->sortOrder($order);
-                $response['status'] = true;
-                echo json_encode($response);
-                return;
+                if (Router::isAjax()) {
+                    $model = new Task();
+                    $model->sortOrder($order);
+                    $response['status'] = true;
+                    echo json_encode($response);
+                    return;
+                }
             }
         }
     }
 
+    /**
+     * Update task function
+     */
     public function actionUpdate()
     {
-        $taskId = filter_input(INPUT_POST, 'task-id');
+        $taskId = filter_input(INPUT_POST, 'task-id', FILTER_VALIDATE_INT);
         $newName = filter_input(INPUT_POST, 'new-name');
 
         if ($taskId && $newName) {
@@ -126,33 +99,19 @@ class TaskController extends Controller
                 $response['task-id'] = $taskId;
                 $model = new Task();
                 $model->findTaskById($taskId);
-                if ($model->update($newName)) {
-                    $response['status'] = true;
-                    $response['message'] = View::renderPartial('alerts/alert', [
-                        'message' => [
-                            'type' => MSG_SUCCESS,
-                            'text' => 'Task successfully updated',
-                        ]
-                    ]);
-                } else {
-                    $response['status'] = false;
-                    $response['message'] = View::renderPartial('alerts/alert', [
-                        'message' => [
-                            'type' => MSG_ERROR,
-                            'text' => 'Task not updated',
-                        ]
-                    ]);
-                }
+                $response['status'] = $model->update($newName) ? true : false;
                 echo json_encode($response);
                 return;
             }
         }
     }
 
+    /**
+     * Change priority task function
+     */
     public function actionChangePriority()
     {
         $taskId = filter_input(INPUT_POST, 'task-id', FILTER_VALIDATE_INT);
-//        $currentPriority = filter_input(INPUT_POST, 'current-priority', FILTER_VALIDATE_INT);
 
         if ($taskId) {
             if (Router::isAjax()) {
@@ -164,20 +123,8 @@ class TaskController extends Controller
                     $response['status'] = true;
                     $response['new_priority_name'] = $newPriority['name'];
                     $response['new_priority_color'] = $newPriority['color'];
-                    $response['message'] = View::renderPartial('alerts/alert', [
-                        'message' => [
-                            'type' => MSG_SUCCESS,
-                            'text' => 'Priority successfully updated',
-                        ]
-                    ]);
                 } else {
                     $response['status'] = false;
-                    $response['message'] = View::renderPartial('alerts/alert', [
-                        'message' => [
-                            'type' => MSG_ERROR,
-                            'text' => 'Priority not updated',
-                        ]
-                    ]);
                 }
                 echo json_encode($response);
                 return;
@@ -185,6 +132,9 @@ class TaskController extends Controller
         }
     }
 
+    /**
+     * Change task deadline
+     */
     public function actionChangeDeadline()
     {
         $taskId = filter_input(INPUT_POST, 'task-id', FILTER_VALIDATE_INT);
@@ -198,29 +148,16 @@ class TaskController extends Controller
                 $response['task-id'] = $taskId;
                 $model = new Task();
                 $model->findTaskById($taskId);
-                if ($model->changeDeadline($deadline)) {
-                    $response['status'] = true;
-                    $response['message'] = View::renderPartial('alerts/alert', [
-                        'message' => [
-                            'type' => MSG_SUCCESS,
-                            'text' => 'Deadline successfully updated',
-                        ]
-                    ]);
-                } else {
-                    $response['status'] = false;
-                    $response['message'] = View::renderPartial('alerts/alert', [
-                        'message' => [
-                            'type' => MSG_ERROR,
-                            'text' => 'Deadline not updated',
-                        ]
-                    ]);
-                }
+                $response['status'] = $model->changeDeadline($deadline) ? true : false;
                 echo json_encode($response);
                 return;
             }
         }
     }
 
+    /**
+     * Check task
+     */
     public function actionChangeDone()
     {
         $taskId = filter_input(INPUT_POST, 'task-id', FILTER_VALIDATE_INT);
@@ -232,23 +169,7 @@ class TaskController extends Controller
                 $response['task-id'] = $taskId;
                 $model = new Task();
                 $model->findTaskById($taskId);
-                if ($model->changeDone($isDone)) {
-                    $response['status'] = true;
-                    $response['message'] = View::renderPartial('alerts/alert', [
-                        'message' => [
-                            'type' => MSG_SUCCESS,
-                            'text' => 'Done successfully updated',
-                        ]
-                    ]);
-                } else {
-                    $response['status'] = false;
-                    $response['message'] = View::renderPartial('alerts/alert', [
-                        'message' => [
-                            'type' => MSG_ERROR,
-                            'text' => 'Done not updated',
-                        ]
-                    ]);
-                }
+                $response['status'] = $model->changeDone($isDone) ? true : false;
                 echo json_encode($response);
                 return;
             }

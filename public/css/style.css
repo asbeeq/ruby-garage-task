@@ -181,7 +181,7 @@ a.navbar-brand {
     background-color: #ffffff;
 }
 
-.tasks .row:last-child .project-task {
+.tasks .row:last-of-type .project-task {
     border-bottom-color: #b4b2aa;
     border-radius: 0 0 15px 15px;
     box-shadow: 0 1px 0 0 #909090;
@@ -293,4 +293,8 @@ a.navbar-brand {
 
 .done {
     text-decoration: line-through;
+}
+
+.has-error {
+    color: #a94442;
 }

@@ -12,6 +12,7 @@ return [
     // AJAX
     ['POST', '/ajax/delete-project', 'project_delete'], // delete project
     ['POST', '/ajax/update-project', 'project_update'], // update project
+    ['POST', '/ajax/create-project', 'project_create'], // create project
     ['POST', '/ajax/create-task', 'task_create'], // create task
     ['POST', '/ajax/delete-task', 'task_delete'], // delete task
     ['POST', '/ajax/sort-task', 'task_sort'], // sort task

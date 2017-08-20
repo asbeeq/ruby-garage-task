@@ -37,8 +37,10 @@
     </div>
 
     <div class="tasks">
-        <?php foreach ($project['tasks'] as $task) : ?>
-            <?= \Core\View::renderPartial('partial/task', ['task' => $task]) ?>
-        <?php endforeach; ?>
+        <?php if (count($project['tasks']) > 0) : ?>
+            <?php foreach ($project['tasks'] as $task) : ?>
+                <?= \Core\View::renderPartial('partial/task', ['task' => $task]) ?>
+            <?php endforeach; ?>
+        <?php endif; ?>
     </div>
 </div>

@@ -47,7 +47,6 @@ class Task extends Model
 
     public function getTasks($projectId)
     {
-        // SELECT tasks.id, tasks.name, sort_order, priority_id, is_done, project_id, deadline, prioritys.name as priority_name FROM tasks INNER JOIN prioritys ON priority_id = prioritys.id
         $query = "SELECT tasks.id, tasks.name, sort_order, priority_id, is_done, project_id, deadline, priorities.name as priority_name, color as priority_color FROM " .
             $this->table . " INNER JOIN priorities ON priority_id = priorities.id " .
             "WHERE project_id = " . $projectId . " ORDER BY sort_order ASC";

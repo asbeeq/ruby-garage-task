@@ -18,22 +18,29 @@ class ProjectController extends Controller
 
     public function actionCreate()
     {
-        $model = new Project();
-        if ($userId = User::isLogin()) {
-            $model->name = filter_input(INPUT_POST, 'name');
-            $model->userId = $userId;
+        $projectName = filter_input(INPUT_POST, 'project-name');
 
-            if ($model->validate()) {
-                if ($model->save()) {
-                    Message::Success('You have successfully add project');
+        if ($projectName && $userId = User::isLogin()) {
+            if (Router::isAjax()) {
+                $model = new Project();
+                $model->name = $projectName;
+                $model->userId = $userId;
+
+                $response = [];
+                if ($model->validate() && $id = $model->save()) {
+                    $response['status'] = true;
+                    $response['project_block'] = View::renderPartial('partial/project', [
+                        'project' => [
+                            'id' => $id,
+                            'name' => $model->name,
+                        ]
+                    ]);
                 } else {
-                    Message::Error('Someting wrong');
+                    $response['status'] = true;
                 }
-                Router::redirect('/');
-            } else {
-                $this->view->setPageTitle('Create Project')->render('project/create', [
-                    'oldName' => $model->name,
-                ]);
+
+                echo json_encode($response);
+                return;
             }
         }
     }
@@ -46,23 +53,7 @@ class ProjectController extends Controller
                 $response['project'] = $id;
                 $model = new Project();
                 $model->findById($id);
-                if ($model->delete()) {
-                    $response['status'] = true;
-                    $response['message'] = View::renderPartial('alerts/alert', [
-                        'message' => [
-                            'type' => MSG_SUCCESS,
-                            'text' => 'Project successfully deleted',
-                        ]
-                    ]);
-                } else {
-                    $response['status'] = false;
-                    $response['message'] = View::renderPartial('alerts/alert', [
-                        'message' => [
-                            'type' => MSG_ERROR,
-                            'text' => 'Project not deleted',
-                        ]
-                    ]);
-                }
+                $response['status'] = $model->delete() ? true : false;
                 echo json_encode($response);
                 return;
             }
@@ -71,7 +62,7 @@ class ProjectController extends Controller
 
     public function actionUpdate()
     {
-        $projectId = filter_input(INPUT_POST, 'project-id');
+        $projectId = filter_input(INPUT_POST, 'project-id', FILTER_VALIDATE_INT);
         $newName = filter_input(INPUT_POST, 'new-name');
 
         if ($projectId && $newName) {
@@ -80,23 +71,7 @@ class ProjectController extends Controller
                 $response['project-id'] = $projectId;
                 $model = new Project();
                 $model->findById($projectId);
-                if ($model->update($newName)) {
-                    $response['status'] = true;
-                    $response['message'] = View::renderPartial('alerts/alert', [
-                        'message' => [
-                            'type' => MSG_SUCCESS,
-                            'text' => 'Project successfully updated',
-                        ]
-                    ]);
-                } else {
-                    $response['status'] = false;
-                    $response['message'] = View::renderPartial('alerts/alert', [
-                        'message' => [
-                            'type' => MSG_ERROR,
-                            'text' => 'Project not updated',
-                        ]
-                    ]);
-                }
+                $response['status'] = $model->update($newName) ? true : false;
                 echo json_encode($response);
                 return;
             }

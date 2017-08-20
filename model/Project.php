@@ -57,7 +57,7 @@ class Project extends Model
     {
         $query = "INSERT INTO " . $this->table . " (name, user_id) VALUES ('" .
             $this->name . "', " . $this->userId . ");";
-        return $this->mysqli->query($query);
+        return $this->mysqli->query($query) ? $this->mysqli->insert_id : false;
     }
 
     public function findById($id) {
