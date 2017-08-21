@@ -24,7 +24,7 @@ class RegisterController extends Controller
     public function actionRegister()
     {
         $model = new User();
-        $model->login = filter_input(INPUT_POST, 'login');
+        $model->login = strtolower(filter_input(INPUT_POST, 'login'));
         $model->email = filter_input(INPUT_POST, 'email');
         $model->password = filter_input(INPUT_POST, 'password');
         $model->passwordConfirm = filter_input(INPUT_POST, 'password_confirm');
