@@ -79,17 +79,17 @@
     +---------------+------------------+------+-----+---------+----------------+
 ```
 ## Список реализованых и не реализованых требований
-####Functional requirements
-* I want to be able to create/update/delete projects - **реализовано**
-* I want to be able to add tasks to my project - **реализовано**
-* I want to be able to update/delete tasks - **реализовано**
-* I want to be able to prioritize tasks into a project - **реализовано** (предусмотрено 4 типа приоритетов задач: важное и срочное, не важное и срочное, важное не срочное, не важное не срочное)
-* I want to be able to choose deadline for my task - **реализовано**
-* I want to be able to mark a task as 'done' - **реализовано**
-####Additional functionality
-* It should work like one page WEB application and should use AJAX technology, load and submit data without reloading a page. - **реализовано** (Добавление, редактирование и удаление задач происходит через AJAX)
-* It should have user authentication solution and a user should only have access to their own projects and tasks. - **реализовано** (регистрация и аутентификация не используют AJAX)
-* It should have automated tests for the all functionality - **не реализовано**
+#### Functional requirements
+* *I want to be able to create/update/delete projects* - **реализовано**
+* *I want to be able to add tasks to my project* - **реализовано**
+* *I want to be able to update/delete tasks* - **реализовано**
+* *I want to be able to prioritize tasks into a project* - **реализовано** (предусмотрено 4 типа приоритетов задач: важное и срочное, не важное и срочное, важное не срочное, не важное не срочное)
+* *I want to be able to choose deadline for my task* - **реализовано**
+* *I want to be able to mark a task as 'done'* - **реализовано**
+#### Additional functionality
+* *It should work like one page WEB application and should use AJAX technology, load and submit data without reloading a page.* - **реализовано** (Добавление, редактирование и удаление задач происходит через AJAX)
+* *It should have user authentication solution and a user should only have access to their own projects and tasks.* - **реализовано** (регистрация и аутентификация не используют AJAX)
+* *It should have automated tests for the all functionality* - **не реализовано**
 
 ## SQL task
 #### Given tables:
