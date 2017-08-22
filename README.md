@@ -92,7 +92,7 @@
 * It should have automated tests for the all functionality - **не реализовано**
 
 ## SQL task
-#####Given tables:
+#### Given tables:
 * tasks (id, name, status, project_id)
 ```mysql
 SELECT tasks.id, tasks.name, priorities.name as priority, project_id 
@@ -106,7 +106,7 @@ ON priority_id = priorities.id
 SELECT id, name 
 FROM projects
 ```
-##### Write the queries for:
+#### Write the queries for:
 * get all statuses, not repeating, alphabetically ordered
 ```mysql
 SELECT priorities.name as name 
