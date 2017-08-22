@@ -27,7 +27,7 @@
                 <div class="input-group">
                     <input type="text" class="form-control"
                            data-project-id="<?= $project['id'] ?>"
-                           placeholder="Start typing here to create a task...">
+                           placeholder="Start typing here to create a task..." maxlength="255">
                     <span class="input-group-btn">
                         <button class="btn btn-default" type="submit">Add Task</button>
                     </span>

@@ -84,6 +84,18 @@ class Project extends Model
     }
 
     /**
+     * Function update project name
+     *
+     * @param $name
+     * @return bool
+     */
+    public function update()
+    {
+        $query = "UPDATE " . $this->table . " SET name = '" . $this->name . "' WHERE id = " . $this->id;
+        return $this->mysqli->query($query);
+    }
+
+    /**
      * Function delete project from DB
      *
      * @return bool

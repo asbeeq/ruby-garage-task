@@ -3,6 +3,7 @@
 namespace Model;
 
 use Core\Model;
+use Libs\Message;
 
 class Task extends Model
 {
@@ -22,7 +23,34 @@ class Task extends Model
 
     public function validate()
     {
+        $hasError = false;
 
+        if (!$this->name) {
+            Message::Error('Name can not be empty');
+            $hasError = true;
+        }
+
+        if (strlen($this->name) > 255) {
+            Message::Error('Name must be less than 255 characters');
+            $hasError = true;
+        }
+
+        if (!$this->sortOrder) {
+            Message::Error('Not set sort id');
+            $hasError = true;
+        }
+
+        if (!is_int($this->sortOrder)) {
+            Message::Error('Sort id must be integer');
+            $hasError = true;
+        }
+
+        if (!$this->projectId) {
+            Message::Error('Task not have project id');
+            $hasError = true;
+        }
+
+        return $hasError ? false : true;
     }
 
     public function getSortOrder()
@@ -71,8 +99,9 @@ class Task extends Model
         if ($task) {
             $this->id = $task['id'];
             $this->name = $task['name'];
-            $this->sortOrder = $task['sort_order'];
-            $this->priority = $task['priority_id'];
+            $this->sortOrder = intval($task['sort_order']);
+            $this->priority = intval($task['priority_id']);
+            $this->projectId = intval($task['project_id']);
             $this->isDone = $task['is_done'];
             $this->deadline = $task['deadline'];
             return true;
@@ -97,9 +126,9 @@ class Task extends Model
         return true;
     }
 
-    public function update($name)
+    public function update()
     {
-        $query = "UPDATE " . $this->table . " SET name = '" . $name . "' WHERE id = " . $this->id;
+        $query = "UPDATE " . $this->table . " SET name = '" . $this->name . "' WHERE id = " . $this->id;
         return $this->mysqli->query($query);
     }
 

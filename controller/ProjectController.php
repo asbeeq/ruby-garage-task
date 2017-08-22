@@ -74,7 +74,7 @@ class ProjectController extends Controller
                 $model = new Project();
                 $model->findById($projectId);
                 $model->name = $newName;
-                if ($model->validate() && $id = $model->save()) {
+                if ($model->validate() && $id = $model->update()) {
                     $response['status'] = true;
                 } else {
                     $response['status'] = false;

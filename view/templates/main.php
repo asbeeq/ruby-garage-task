@@ -21,7 +21,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="project-name">Project name</label>
-                        <input type="text" name="project-name" class="form-control" id="project-name">
+                        <input type="text" name="project-name" class="form-control" id="project-name" maxlength="255">
                     </div>
                 </div>
                 <div class="modal-footer">

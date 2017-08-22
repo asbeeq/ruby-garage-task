@@ -57,7 +57,9 @@ $(document).ready(function () {
 
         project_header.find('.project-header-text')
             .append($('<input>')
+                .attr('type', 'text')
                 .attr('name', 'name')
+                .attr('maxlength', '255')
                 .attr('data-project-id', project_header.parents('.project').data('project-id'))
                 .addClass('form-control')
                 .val(name))
@@ -198,6 +200,7 @@ $(document).ready(function () {
                     project_input.find('input').val('').focus();
                     project_input.parents('.project').find('.tasks').append(response.task_block);
                 } else {
+                    if (response.message) show_message(response.message);
                     console.log('Status add task: ' + response.status);
                 }
             }
@@ -279,6 +282,7 @@ $(document).ready(function () {
                 .append($('<input>')
                     .attr('name', 'name')
                     .attr('type', 'text')
+                    .attr('maxlength', '255')
                     .addClass('form-control input-sm task-input')
                     .val(name)
                 )
@@ -322,6 +326,7 @@ $(document).ready(function () {
                         $(this).find(".project-task-action").toggleClass("show");
                     });
                 } else {
+                    if (response.message) show_message(response.message);
                     console.log('Status edit task: ' + response.status);
                 }
             }

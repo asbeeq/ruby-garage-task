@@ -6,6 +6,7 @@ use Core\Controller;
 use Model\Task;
 use Core\Router;
 use Core\View;
+use Libs\Message;
 
 class TaskController extends Controller
 {
@@ -28,7 +29,7 @@ class TaskController extends Controller
                 $model->projectId = $projectId;
                 $model->sortOrder = $model->getSortOrder();
 
-                if ($id = $model->save()) {
+                if ($model->validate() && $id = $model->save()) {
                     $response['status'] = true;
                     $response['task_block'] = View::renderPartial('partial/task', [
                         'task' => [
@@ -40,6 +41,7 @@ class TaskController extends Controller
                     ]);
                 } else {
                     $response['status'] = false;
+                    $response['message'] = Message::hasMessages() ? Message::getLastMessage() : null;
                 }
                 echo json_encode($response);
                 return;
@@ -99,7 +101,13 @@ class TaskController extends Controller
                 $response['task-id'] = $taskId;
                 $model = new Task();
                 $model->findTaskById($taskId);
-                $response['status'] = $model->update($newName) ? true : false;
+                $model->name = $newName;
+                if ($model->validate() && $id = $model->update()) {
+                    $response['status'] = true;
+                } else {
+                    $response['status'] = false;
+                    $response['message'] = Message::hasMessages() ? Message::getLastMessage() : null;
+                }
                 echo json_encode($response);
                 return;
             }
