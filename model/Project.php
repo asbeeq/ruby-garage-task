@@ -17,6 +17,12 @@ class Project extends Model
         $this->table = 'projects';
     }
 
+    /**
+     * Get all user project
+     *
+     * @param integer $userId
+     * @return array|bool
+     */
     public function getUserProjects($userId)
     {
         if ($userId) {
@@ -31,6 +37,10 @@ class Project extends Model
         return false;
     }
 
+    /**
+     * Validate data before save project
+     * @return bool
+     */
     public function validate()
     {
         $hasError = false;
@@ -46,13 +56,18 @@ class Project extends Model
         }
 
         if (!$this->userId) {
-            Message::Error('You did not enter');
+            Message::Error('You are not login');
             $hasError = true;
         }
 
         return $hasError ? false : true;
     }
 
+    /**
+     * Save project to DB
+     * if project save - return record id
+     * @return bool|mixed
+     */
     public function save()
     {
         $query = "INSERT INTO " . $this->table . " (name, user_id) VALUES ('" .
@@ -68,12 +83,11 @@ class Project extends Model
         $this->userId = $response['user_id'];
     }
 
-    public function update($name)
-    {
-        $query = "UPDATE " . $this->table . " SET name = '" . $name . "' WHERE id = " . $this->id;
-        return $this->mysqli->query($query);
-    }
-
+    /**
+     * Function delete project from DB
+     *
+     * @return bool
+     */
     public function delete()
     {
         $this->deleteProjectTasks();
@@ -81,6 +95,9 @@ class Project extends Model
         return $this->mysqli->query($query);
     }
 
+    /**
+     * Delete all tasks from current project
+     */
     private function deleteProjectTasks()
     {
         $model = new Task();

@@ -36,7 +36,8 @@ class ProjectController extends Controller
                         ]
                     ]);
                 } else {
-                    $response['status'] = true;
+                    $response['status'] = false;
+                    $response['message'] = Message::hasMessages() ? Message::getLastMessage() : null;
                 }
 
                 echo json_encode($response);
@@ -47,7 +48,8 @@ class ProjectController extends Controller
 
     public function actionDelete()
     {
-        if ($id = filter_input(INPUT_POST, 'project-id')) {
+        $id = filter_input(INPUT_POST, 'project-id', FILTER_VALIDATE_INT);
+        if ($id) {
             if (Router::isAjax()) {
                 $response = [];
                 $response['project'] = $id;
@@ -71,7 +73,13 @@ class ProjectController extends Controller
                 $response['project-id'] = $projectId;
                 $model = new Project();
                 $model->findById($projectId);
-                $response['status'] = $model->update($newName) ? true : false;
+                $model->name = $newName;
+                if ($model->validate() && $id = $model->save()) {
+                    $response['status'] = true;
+                } else {
+                    $response['status'] = false;
+                    $response['message'] = Message::hasMessages() ? Message::getLastMessage() : null;
+                }
                 echo json_encode($response);
                 return;
             }

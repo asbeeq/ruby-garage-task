@@ -29,6 +29,11 @@ class Message
         ];
     }
 
+    public static function getLastMessage()
+    {
+        return array_pop($_SESSION['messages']);
+    }
+
     public static function getMessages()
     {
         $msg = $_SESSION['messages'];

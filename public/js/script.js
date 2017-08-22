@@ -99,6 +99,7 @@ $(document).ready(function () {
                         $(this).find(".project-header-right-icon").toggleClass("show");
                     });
                 } else {
+                    if (response.message) show_message(response.message);
                     console.log('Status edit project: ' + response.status);
                 }
             }
@@ -161,6 +162,7 @@ $(document).ready(function () {
                         }
                     });
                 } else {
+                    if (response.message) show_message(response.message);
                     console.log('Status edit project: ' + response.status);
                 }
             }
